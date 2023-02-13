@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const connectionurl = process.env.mongodburl;
+const connectionurl = 'mongodb+srv://nayan:nayan@cluster0.l03qppq.mongodb.net/?retryWrites=true&w=majority';
 
 export const connectdb = async () => {
   try {

@@ -28,7 +28,7 @@ export const loadBlockchainDataDoc = async () => {
   if (networkId) {
     const auth = new web3.eth.Contract(
       Doctor.abi,
-      Doctor.networks[networkId].address
+      Doctor.networks[5777].address
     );
     return { auth, accounts: accounts[0] };
   }

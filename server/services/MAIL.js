@@ -4,6 +4,7 @@ import { MAIL_SETTINGS } from "../constants/constants.js";
 const transporter = nodemailer.createTransport(MAIL_SETTINGS);
 
 export async function sendMail(params) {
+  console.log(MAIL_SETTINGS.auth.user, params.to, params.OTP)
   try {
     let info = await transporter.sendMail({
       from: MAIL_SETTINGS.auth.user,

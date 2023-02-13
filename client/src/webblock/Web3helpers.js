@@ -24,11 +24,12 @@ export const loadBlockchainData = async () => {
   const networkId = await web3.eth.net.getId();
 
   // Network data
-
+  // console.log(await web3.eth.net.getNetworkType())
   if (networkId) {
+    // console.log(Auth.networks)
     const auth = new web3.eth.Contract(
       Auth.abi,
-      Auth.networks[networkId].address
+      Auth.networks[5777].address
     );
     return { auth, accounts: accounts[0] };
   }

@@ -10,7 +10,7 @@ export const OTP_CONFIG = {
 export const MAIL_SETTINGS = {
   service: "gmail",
   auth: {
-    user: process.env.APP_EMAIL_ID,
-    pass: process.env.APP_EMAIL_PASS,
+    user: "nayanbari89@gmail.com",
+    pass: "Nayan@1107",
   },
 };

@@ -330,7 +330,7 @@ const Form = () => {
       } catch (err) {
         Swal.fire({
           ttile: "Error",
-          text: data.data,
+          text: data,
           icon: "error",
         });
       }
