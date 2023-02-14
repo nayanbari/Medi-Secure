@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { DoctorProfile, localStep, Profile } from '../../api/api'
 import { data } from '../../api/data'
+import Appointment from '../Appointment/Appointment'
 import DocData from '../Doctor/DocData'
 import DocLogin from '../Doctor/DocLogin'
 import DocRegister from '../Doctor/DocRegister'
@@ -26,7 +27,7 @@ const Box = () => {
   
   const [step,setStep] = useState(path.includes("user") ? 11 : localStep);
   
-
+  console.log(path.includes("user"), localStep)
   const RenderComponent = () => {
     let choice = step;
 
@@ -45,7 +46,7 @@ const Box = () => {
         return DoctorProfile ? <DocData setStep={setStep} /> : <DocRegister setStep={setStep} />;
 
       case 4:
-        return <h1>Appointment Form</h1>
+        return <Appointment setStep={setStep} />
 
       case 5:
         return <h1>Chats</h1>

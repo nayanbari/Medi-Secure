@@ -1,13 +1,21 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
 import { BiAddToQueue } from "react-icons/bi";
 import { FiDelete } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import { DoctorProfile } from "../../api/api";
-import { bloodGroups, diseases } from "../../api/list";
+import { bloodGroups, medicines, diseases } from "../../api/list";
 import Spinner from "../../utils/Spinner";
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const mic = new SpeechRecognition()
+
+mic.continuous = true
+mic.interimResults = true
+mic.lang = 'en-US'
+
 
 const MedicalForm = () => {
   const location = useLocation();
@@ -21,6 +29,7 @@ const MedicalForm = () => {
     });
   }
   const [ubloodGroup, setUBloodGroup] = useState(bloodGroups[0]);
+  const [medicin, setMedicin] = useState(medicines[0].name);
   const [udisease, setUdisease] = useState(diseasesArr);
   const [medication, setMedication] = useState([{ name: "", dose: "" }]);
   const [operationDetails, setOperationDetails] = useState("");
@@ -29,6 +38,53 @@ const MedicalForm = () => {
   let date = new Date();
   
   const [loading, setLoading] = useState(false);
+
+  const [isListening, setIsListening] = useState(false)
+
+  const [note, setNote] = useState(null)
+
+  const [savedNotes, setSavedNotes] = useState([])
+
+  useEffect(() => {
+    handleListen()
+  }, [isListening])
+
+  const handleListen = () => {
+    if (isListening) {
+      mic.start()
+      mic.onend = () => {
+        console.log('continue..')
+        mic.start()
+      }
+    } else {
+      mic.stop()
+      mic.onend = () => {
+        console.log('Stopped Mic on Click')
+      }
+    }
+    mic.onstart = () => {
+      console.log('Mics on')
+    }
+
+    mic.onresult = event => {
+      const transcript = Array.from(event.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('')
+      console.log(transcript)
+      setNote(transcript)
+      mic.onerror = event => {
+        console.log(event.error)
+      }
+    }
+  }
+
+  const handleSaveNote = () => {
+    setSavedNotes([...savedNotes, note])
+    console.log('Saved notes' ,note)
+    setSpecialCare([...savedNotes, note].join('\n'))
+    setNote('')
+  }
 
   const handleFiles = (post) => {
     setLoading(true);
@@ -119,7 +175,7 @@ const MedicalForm = () => {
           medicalData: postData,
         };
 
-        const data = await axios.post(`http://localhost:6969/user/medicalDetails/${path}`,reqData);
+        const data = await axios.post(`http://localhost:6969/user/medicalDetails/${path}`, reqData);
 
         if(data.data._id){
           Swal.fire({
@@ -164,12 +220,22 @@ const MedicalForm = () => {
         {medication.map((_val, _id) => {
           return (
             <div className="my-2 flex items-center justify-between">
-              <input
+              {/* <input
                 placeholder="Name"
                 className="border w-2/5 p-2 mr-2 focus:outline-none"
                 name="name"
                 onChange={(e) => handleChangeMed(e, _id)}
-              />
+              /> */}
+              <select
+              placeholder="Name"
+              name="name"
+                className="my-2 p-2 border w-full focus:outline-none"
+                onChange={(e) => handleChangeMed(e, _id)}
+              >
+                {medicines.map((_val, _id) => {
+                  return <option key={_id}>{_val.name}</option>;
+                })}
+              </select>
               <input
                 placeholder="Dose"
                 className="border w-2/5 p-2 ml-2 focus:outline-none"
@@ -252,12 +318,37 @@ const MedicalForm = () => {
         </div>
       </div>
       <div className="my-4">
+        <label className="text-lg font-semibold flex justify-between">
+          Record your audio:
+          {isListening ? <span className="text-green-600 text-sm">listening</span> : <span className="text-red-600 text-sm">not listening</span>}
+        </label>
+        <div>
+          <button onClick={handleSaveNote} disabled={!note}  className="border p-2 w-1/2">
+            Save
+          </button>  
+          <button onClick={() => setIsListening(prevState => !prevState)} className="border p-2 w-1/2">
+            Start/Stop
+          </button>
+          <p>{note}</p>
+        </div>
+        <div>
+          <label className="text-lg font-semibold flex justify-between">
+            Notes
+          </label>
+          
+          {savedNotes.map(n => (
+            <p key={n}>{n}</p>
+          ))}
+        </div>
+      </div>
+      <div className="my-4">
         <label className="text-lg font-semibold">Special Care:</label>
         <textarea
           className="border w-full px-1 py-2 resize-none focus:outline-none"
           cols={30}
           rows={5}
           placeholder="Important points regarding medical treatment....."
+          value={specailCare}
           onChange={(e) => setSpecialCare(e.target.value)}
         />
       </div>

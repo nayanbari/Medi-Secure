@@ -6,6 +6,7 @@ import { data, testData } from "../../api/data";
 import userAvatar from "../../Test/images/useravatar.jpg";
 import MedicalForm from "../MedicalRecords/MedicalForm";
 import MedicalRecords from "../MedicalRecords/MedicalRecords";
+import { Profile } from "../../api/api";
 
 const UserProfile = () => {
   const location = useLocation();
@@ -16,7 +17,8 @@ const UserProfile = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await axios.get(`http://localhost:6969/user/${path}`);
+      // const response = await axios.get(`http://localhost:6969/user/${path}`);
+      const response = await axios.get(`http://localhost:6969/user/${(path == undefined) ? Profile.id : path}`);
       setUser(response.data);
     };
     getUser();

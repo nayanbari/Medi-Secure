@@ -5,7 +5,7 @@ import logo from "../../utils/images/satJ.png";
 
 const UserCard = ({ user }) => {
   const [query, setQuery] = useState(user?.id ? user : Profile);
-
+  console.log(user, Profile)
   const RenderQR = () => {
     return (
       <QRCodeCanvas
@@ -25,6 +25,7 @@ const UserCard = ({ user }) => {
   const address = query?.address?.city + ", " + query?.address?.state;
 
   const modifyString = (str) => {
+    console.log(str)
     return str.match(/.{1,4}/g).join("-");
   };
 

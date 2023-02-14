@@ -24,7 +24,7 @@ export const loadBlockchainData = async () => {
   const networkId = await web3.eth.net.getId();
 
   // Network data
-  // console.log(await web3.eth.net.getNetworkType())
+  console.log(accounts)
   if (networkId) {
     // console.log(Auth.networks)
     const auth = new web3.eth.Contract(

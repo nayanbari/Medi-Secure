@@ -895,6 +895,9 @@ const diseases = [
   "Blood Disease"
 ];
 
+const medicines =
+  [  {    "name": "Paracetamol",    "manufacturer": "McNeil Consumer Healthcare"  },  {    "name": "Ibuprofen",    "manufacturer": "Brufen"  },  {    "name": "Diclofenac",    "manufacturer": "Novartis"  },  {    "name": "Cetirizine",    "manufacturer": "UCB Pharma"  },  {    "name": "Azithromycin",    "manufacturer": "Pfizer"  },  {    "name": "Amlodipine",    "manufacturer": "Pfizer"  },  {    "name": "Metformin",    "manufacturer": "Zydus Cadila"  },  {    "name": "Lisinopril",    "manufacturer": "Zydus Cadila"  },  {    "name": "Atorvastatin",    "manufacturer": "Pfizer"  },  {    "name": "Ramipril",    "manufacturer": "Intas Pharmaceuticals"  },  {    "name": "Candesartan",    "manufacturer": "Intas Pharmaceuticals"  },  {    "name": "Omeprazole",    "manufacturer": "AstraZeneca"  },  {    "name": "Ranitidine",    "manufacturer": "AstraZeneca"  },  {    "name": "Clopidogrel",    "manufacturer": "Sanofi"  },  {    "name": "Aspirin",    "manufacturer": "Bayer"  },  {    "name": "Nimesulide",    "manufacturer": "Cipla"  },  {    "name": "Montelukast",    "manufacturer": "Cipla"  },  {    "name": "Levocetirizine",    "manufacturer": "Sun Pharmaceutical Industries"  },  {    "name": "Sodium valproate",    "manufacturer": "Abbott Healthcare"  },  {    "name": "Alprazolam",    "manufacturer": "Cipla"  },  {    "name": "Clonazepam",    "manufacturer": "Ranbaxy Laboratories"  }]
+
 const bloodGroups = ["Select Blood Group","A positive (A+)", "A negative (A-)", "B positive (B+)", "B negative (B-)", "O positive (O+)", "O negative (O-)", "AB positive (AB+)", "AB negative (AB-)"];
 
-export { countries, cities, states, relation,docqualification,bloodGroups,diseases };
+export { countries, cities, states, relation,docqualification,bloodGroups,medicines, diseases };

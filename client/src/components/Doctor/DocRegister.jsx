@@ -15,9 +15,10 @@ const DocRegister = ({setStep}) => {
 
   const loadAccounts = async () => {
     let { auth, accounts } = await loadBlockchainDataDoc();
-
+    console.log(auth)
     setAccounts(accounts);
     setAuth(auth);
+    console.log(accounts)
   };
 
   useEffect(() => {
@@ -90,6 +91,7 @@ const DocRegister = ({setStep}) => {
         return;
     }
     setDoctor({ ...doctor, [name]: value, errors: error });
+    console.log(doctor)
   };
 
   const handleEmpty = (obj) => {

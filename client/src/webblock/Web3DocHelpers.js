@@ -14,8 +14,24 @@ export const loadWeb3Doc = async () => {
   }
 };
 
+// if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
+//   // MetaMask is installed and in use
+//   const web3 = new Web3(window.ethereum || window.web3.currentProvider);
+
+//   window.ethereum.enable().then(function() {
+//     // Retrieve the current account address
+//     web3.eth.getAccounts().then(function(accounts) {
+//       const currentAddress = accounts[0];
+//       console.log("MetaMask wallet address: ", currentAddress);
+//     });
+//   });
+// } else {
+//   console.log("MetaMask is not installed");
+// }
+
+
 export const loadBlockchainDataDoc = async () => {
-  const web3 = window.web3;
+  const web3 = new Web3(window.ethereum || window.web3.currentProvider)
   // Load account
   const accounts = await web3.eth.getAccounts();
 
@@ -26,10 +42,11 @@ export const loadBlockchainDataDoc = async () => {
   // Network data
 
   if (networkId) {
+    console.log(networkId, Doctor.networks[5777].address)
     const auth = new web3.eth.Contract(
       Doctor.abi,
       Doctor.networks[5777].address
-    );
+      );
     return { auth, accounts: accounts[0] };
   }
 };

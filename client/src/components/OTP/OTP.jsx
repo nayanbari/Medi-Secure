@@ -10,7 +10,7 @@ const OTP = ({email,setEmailVerified}) => {
       otp
     };
 
-    const data = await axios.post("http://localhost:6969/user/verifyEmail",postData);
+    const data = await axios.post("http://localhost:6969/user/verifyEmail", postData);
 
     alert(data.data);
   }

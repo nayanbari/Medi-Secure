@@ -12,7 +12,7 @@ const UserData = ({ setStep }) => {
   const navigate = useNavigate();
   const [isEmailVerified, setEmailVerified] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-  const path = Profile?._id;
+  const path = Profile.id;
 
   const handleVerify = async () => {
     setIsVerify(!isVerify);
@@ -37,7 +37,6 @@ const UserData = ({ setStep }) => {
     const data = await axios.get(
       `http://localhost:6969/user/delete/${Profile.id}`
     );
-
     window.localStorage.removeItem("Profile");
     window.location.reload(0);
     alert(data.data);

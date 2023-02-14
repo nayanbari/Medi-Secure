@@ -15,10 +15,22 @@ import {
   loadBlockchainDataDoc,
   loadWeb3Doc,
 } from "../../webblock/Web3DocHelpers";
+import BigCalendar from "../Appointment/BigCalendar/BigCalendar";
 
 const DocData = ({ setStep }) => {
   const [auth, setAuth] = useState();
   const [accounts, setAccounts] = useState();
+  const [docData, setDocData] = useState([])
+
+  useEffect(() => {
+    const queryData = async () => {
+      const data = await axios.get(`http://localhost:6969/doctor`);
+      // DoctorProfile.docEvents = data.data[0].docEvents
+      console.log(data.data[0]._id)
+      setDocData(data.data[0])
+    };
+    queryData();
+  }, []);
 
   const loadAccounts = async () => {
     let { auth, accounts } = await loadBlockchainDataDoc();
@@ -37,7 +49,8 @@ const DocData = ({ setStep }) => {
 
   const [isDocShow, setIsDocShow] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [updateData, setUpdateData] = useState(DoctorProfile);
+  const [updateData, setUpdateData] = useState(docData);
+  console.log(docData.docEvents)
   const renderNav = () => {
     return (
       <nav className="p-2 mt-8">
@@ -76,6 +89,7 @@ const DocData = ({ setStep }) => {
         registrationNo: updateData.registrationNo,
         contactNo: updateData.contactNo,
         accountHash: accounts,
+        docEvents: updateData.docEvents
       };
 
       const data = await axios.post(
@@ -96,6 +110,11 @@ const DocData = ({ setStep }) => {
         .send({ from: accounts });
     }
   };
+  const eventDataHandler = (childdata) => {
+    console.log(childdata);
+    // setEventData(childdata)
+
+  }
 
   return (
     <div className="select-none">
@@ -259,6 +278,8 @@ const DocData = ({ setStep }) => {
           </div>
         )}
       </section>
+      {(docData.docEvents == undefined) ? <p>Loading</p> : <BigCalendar eventDataHandler={eventDataHandler} prevEventsData={docData.docEvents} />}
+      
     </div>
   );
 };
