@@ -335,10 +335,10 @@ const MedicalForm = () => {
           <label className="text-lg font-semibold flex justify-between">
             Notes
           </label>
-          
-          {savedNotes.map(n => (
+          <p>{specailCare}</p>
+          {/* {savedNotes.map(n => (
             <p key={n}>{n}</p>
-          ))}
+          ))} */}
         </div>
       </div>
       <div className="my-4">
@@ -349,7 +349,7 @@ const MedicalForm = () => {
           rows={5}
           placeholder="Important points regarding medical treatment....."
           value={specailCare}
-          onChange={(e) => setSpecialCare(e.target.value)}
+          onChange={(e) => {setSpecialCare(e.target.value)}}
         />
       </div>
       <div>

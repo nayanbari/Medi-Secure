@@ -26,6 +26,9 @@ const DoctorSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    docEvents:{
+        type:Array,
+    },
     accountHash:{
         type:String,
         required:true

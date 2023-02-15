@@ -48,7 +48,8 @@ export const createDoctor = asyncHandler(async (req, res) => {
       certificate,
       accountHash,
       registrationNo,
-      token: genrateToken(doctor._id),
+      docEvents: [],
+    token: genrateToken(doctor._id),
     });
   } else {
     res.status(400);
@@ -75,6 +76,7 @@ export const updateDoctor = asyncHandler(async (req, res) => {
     registrationNo,
     contactNo,
     accountHash,
+    docEvents
   } = req.body;
 
   Doctor.findOne({ email }, (err, doc) => {
@@ -84,6 +86,7 @@ export const updateDoctor = asyncHandler(async (req, res) => {
       doc.registrationNo = registrationNo;
       doc.contactNo = contactNo;
       doc.accountHash = accountHash;
+      doc.docEvents = docEvents;
 
       doc
         .save()
@@ -159,3 +162,49 @@ export const VerifyLogin = asyncHandler(async (req, res) => {
     throw new Error("Invalid OTP entered");
   }
 });
+
+export const docEventDetails = asyncHandler(async (req, res) => {
+  let id = req.params.id;
+  console.log(id)
+  if (!req.body) {
+    res.status(400);
+    throw new Error("Query Data is not reached");
+  }
+
+  const {
+    eventsArray
+  } = req.body;
+
+  const docExists = await Doctor.findOne({ _id: id });
+
+  if (docExists) {
+    docExists.docEvents.push(req.body);
+
+    docExists
+      .save()
+      .then(() => {
+        res.status(200).json(docExists);
+      })
+      .catch((error) => {
+        res.status(400);
+        throw new Error(`Error ${error}`);
+      });
+  } else {
+    res.status(400);
+    throw new Error(`No user found by ID - ${id}`);
+  }
+});
+
+// export const getMedicalRecord = asyncHandler(async (req, res) => {
+//   let id = req.params.id;
+
+//   const userExists = await User.findOne({ _id: id });
+
+//   if (userExists) {
+//     res.status(200).json(userExists.MedicalDetails);
+//   } else {
+//     res.status(400);
+//     throw new Error("Server side error");
+//   }
+// });
+

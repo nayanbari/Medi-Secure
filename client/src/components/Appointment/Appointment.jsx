@@ -17,6 +17,7 @@ const Appointment = ({setStep}) => {
 
     const navigate =  useNavigate();
     const [query, setQuery] = useState("");
+    const [docInfo, setDocInfo] = useState();
     const [users, setUsers] = useState([]);
   
     useEffect(() => {
@@ -25,8 +26,10 @@ const Appointment = ({setStep}) => {
           query !== ""
             ? await axios.get(`http://localhost:6969/doctor/?search=${query}`)
             : { data: [] };
-        setUsers(data.data);
+          console.log(data.data[0])
+        setUsers(data.data[0]);
         setDocId(data.data[0]._id)
+        setDocInfo(data.data[0])
         setEventData(data.data[0].docEvents)
         // DoctorProfile.docEvents = data.data[0].docEvents
         console.log(data.data[0]._id)
