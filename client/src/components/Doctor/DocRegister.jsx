@@ -2,12 +2,32 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { docqualification } from "../../api/list";
+import { Image } from 'cloudinary-react';
 import Spinner from "../../utils/Spinner";
 import {
   loadBlockchainDataDoc,
   loadWeb3Doc,
 } from "../../webblock/Web3DocHelpers";
 import { loadBlockchainData, loadWeb3 } from "../../webblock/Web3helpers";
+
+import { CloudinaryContext } from 'cloudinary-react';
+
+const cloudName = 'dy8qawb3n';
+const apiKey = '578982174463645';
+const apiSecret = 'IiE0XIIlE3TowD6-OhowLGFsZyA';
+
+const cloudinaryConfig = {
+  cloud_name: cloudName,
+  api_key: apiKey,
+  api_secret: apiSecret
+};
+
+const CloudinarySetup = ({ children }) => (
+  <CloudinaryContext cloudName={cloudName} {...cloudinaryConfig}>
+    {children}
+  </CloudinaryContext>
+);
+
 
 const DocRegister = ({setStep}) => {
   const [auth, setAuth] = useState();
@@ -114,6 +134,35 @@ const DocRegister = ({setStep}) => {
     return false;
   };
 
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'blockchain');
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Image upload failed.');
+      }
+
+      const data = await response.json();
+      setCerr(data.secure_url);
+      setLoading(false);
+    } catch (error) {
+      console.error('Image upload error:', error);
+    }
+  };
+
   const handleCerr = (post) => {
     setLoading(true);
     if (post === undefined) {
@@ -129,7 +178,7 @@ const DocRegister = ({setStep}) => {
 
     if (post.type === "image/jpeg" || post.type === "image/png") {
       const data = new FormData();
-      data.append("file", post);
+      data.append("file", post[0]);
       data.append("upload_preset", "blockchain");
       data.append("cloud_name", "dy8qawb3n");
       fetch("https://api.cloudinary.com/v1_1/dy8qawb3n", {
@@ -324,11 +373,15 @@ const DocRegister = ({setStep}) => {
           <span className="text-red-600 ml-2">(only png/jpg*)</span>{" "}
         </label>
         <br />
-        <input
+        <CloudinarySetup>
+        <input type="file" onChange={handleImageUpload} />
+        {cerr && <Image cloudName={cloudName} publicId={cerr} />}
+        </CloudinarySetup>
+        {/* <input
           type={"file"}
           className="px-1 py-2 w-full focus:outline-none border"
           onChange={(e) => handleCerr(e.target.files[0])}
-        />
+        /> */}
       </div>
       <div className="text-center mt-4">
         <button
