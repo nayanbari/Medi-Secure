@@ -4,9 +4,30 @@ import { cities, countries, relation, states } from "../../../api/list";
 import { BiReset, BiSave } from "react-icons/bi";
 import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { useState } from "react";
+import { Image } from 'cloudinary-react';
 import Spinner from "../../../utils/Spinner";
 import Swal from "sweetalert2";
 import { loadBlockchainData, loadWeb3 } from "../../../webblock/Web3helpers";
+
+
+import { CloudinaryContext } from 'cloudinary-react';
+
+const cloudName = 'dy8qawb3n';
+const apiKey = '578982174463645';
+const apiSecret = 'IiE0XIIlE3TowD6-OhowLGFsZyA';
+
+const cloudinaryConfig = {
+  cloud_name: cloudName,
+  api_key: apiKey,
+  api_secret: apiSecret
+};
+
+const CloudinarySetup = ({ children }) => (
+  <CloudinaryContext cloudName={cloudName} {...cloudinaryConfig}>
+    {children}
+  </CloudinaryContext>
+);
+
 
 const Form = () => {
   const [auth, setAuth] = useState();
@@ -101,6 +122,35 @@ const Form = () => {
     pincode: "",
     address: "",
   });
+
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'blockchain');
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Image upload failed.');
+      }
+
+      const data = await response.json();
+      setFile(data.secure_url);
+      setLoading(false);
+    } catch (error) {
+      console.error('Image upload error:', error);
+    }
+  };
 
   const handleFile = (post) => {
     setLoading(true);
@@ -664,11 +714,15 @@ const Form = () => {
           <div className="w-full">
             <label>User Profile Image {Required()}</label>
             <div>
-              <input
+            <CloudinarySetup>
+            <input type="file" onChange={handleImageUpload} />
+            {file && <Image cloudName={cloudName} publicId={file} />}
+            </CloudinarySetup>
+              {/* <input
                 type={"file"}
                 className="p-2 border focus:outline-none w-full"
                 onChange={(e) => handleFile(e.target.files[0])}
-              />
+              /> */}
             </div>
           </div>
         </div>
