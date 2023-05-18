@@ -131,8 +131,8 @@ const DocRegister = ({setStep}) => {
       const data = new FormData();
       data.append("file", post);
       data.append("upload_preset", "blockchain");
-      data.append("cloud_name", "dgrxzxtd8");
-      fetch("https://api.cloudinary.com/v1_1/dgrxzxtd8/image/upload", {
+      data.append("cloud_name", "dy8qawb3n");
+      fetch("https://api.cloudinary.com/v1_1/dy8qawb3n", {
         method: "post",
         body: data,
       })

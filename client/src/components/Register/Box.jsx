@@ -76,7 +76,7 @@ const Box = () => {
         return <UserCard />
 
       case 13:
-        return  <Login setStep={setStep} /> 
+        return <Login setStep={setStep} /> 
       
       case 14:
         return <PersonalMedical />

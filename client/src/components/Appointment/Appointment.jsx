@@ -35,7 +35,7 @@ const Appointment = ({setStep}) => {
         console.log(data.data[0]._id)
       };
       queryData();
-    }, [query]);
+    }, []);
   
     const renderNav = () => {
       return (
@@ -91,7 +91,7 @@ const Appointment = ({setStep}) => {
     const eventDataHandler = (childdata) => {
       console.log(childdata);
       setEventData(childdata)
-
+      // console.log(eventsData)
     }
   return (
 <div>

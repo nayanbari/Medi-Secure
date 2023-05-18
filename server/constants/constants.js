@@ -11,6 +11,6 @@ export const MAIL_SETTINGS = {
   service: "gmail",
   auth: {
     user: "nayanbari89@gmail.com",
-    pass: "Nayan@1107",
+    pass: "gvnlzzxhtqnaxdlb",
   },
 };

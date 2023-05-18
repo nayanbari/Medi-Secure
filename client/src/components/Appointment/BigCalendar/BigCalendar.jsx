@@ -10,11 +10,11 @@ const localizer = momentLocalizer(moment);
 export default function BigCalendar({eventDataHandler, prevEventsData}) {
   const [eventsData, setEventsData] = useState(prevEventsData);
   // setEventsData([...eventsData, prevEventsData])
-  console.log(eventsData)
+  // console.log(eventsData)
 
   useEffect(() => {
     setEventsData(prevEventsData)
-  }, [eventsData]);
+  }, []);
 
   const handleSelect = ({ start, end }) => {
     console.log(start);
@@ -29,6 +29,14 @@ export default function BigCalendar({eventDataHandler, prevEventsData}) {
           title
         }
       ]);
+      console.log([
+        ...eventsData,
+        {
+          start,
+          end,
+          title
+        }
+      ])
       eventDataHandler([...eventsData, {start, end, title}])
     }
   };
